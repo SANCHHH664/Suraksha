@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suraksha — Women Safety Monitoring</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --ivory: #faf7f4;
+      --ivory-2: #f2ede8;
+      --ivory-3: #e8e0d8;
+      --sand: #d4c9bc;
+      --clay: #a89080;
+      --rose: #c0566a;
+      --rose-soft: #e8a0ae;
+      --rose-dim: rgba(192, 86, 106, 0.12);
+      --rose-glow: rgba(192, 86, 106, 0.22);
+      --sage: #5a8a72;
+      --sage-dim: rgba(90, 138, 114, 0.12);
+      --amber: #c07840;
+      --amber-dim: rgba(192, 120, 64, 0.12);
+      --ink: #2c2420;
+      --ink-2: #4a3e38;
+      --ink-3: #6e5e56;
+      --ink-4: #9a8880;
+      --white: #ffffff;
+      --shadow-sm: 0 1px 4px rgba(44, 36, 32, 0.08);
+      --shadow-md: 0 4px 20px rgba(44, 36, 32, 0.1);
+      --shadow-lg: 0 8px 40px rgba(44, 36, 32, 0.12);
+      --r-sm: 8px;
+      --r-md: 14px;
+      --r-lg: 20px;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Outfit', sans-serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      font-family: var(--sans);
+      background: var(--ivory);
+      color: var(--ink);
+      overflow: hidden;
+    }
+
+    /* Layout */
+    .shell {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .hdr {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      height: 58px;
+      background: var(--white);
+      border-bottom: 1px solid var(--ivory-3);
+      box-shadow: var(--shadow-sm);
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    .hdr-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e8c4cb, #c0566a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brand-mark svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .brand-name {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--rose);
+      letter-spacing: 0.02em;
+    }
+
+    .brand-tagline {
+      font-size: 10px;
+      color: var(--ink-4);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 1px;
+    }
+
+    .hdr-center {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .status-pill {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .status-pill.active {
+      background: var(--sage-dim);
+      color: var(--sage);
+      border: 1px solid rgba(90, 138, 114, 0.25);
+    }
+
+    .status-pill.inactive {
+      background: var(--ivory-2);
+      color: var(--ink-4);
+      border: 1px solid var(--ivory-3);
+    }
+
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .pill-dot.pulse {
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.4;
+        transform: scale(0.7);
+      }
+    }
+
+    .hdr-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .clock {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-3);
+      letter-spacing: 0.04em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .date-str {
+      font-size: 11px;
+      color: var(--ink-4);
+      text-align: right;
+    }
+
+    .body {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      flex: 1;
+      overflow: hidden;
+      gap: 0;
+    }
+
+    .main {
+      display: flex;
+      flex-direction: column;
+      padding: 18px;
+      gap: 14px;
+      overflow: hidden;
+      background: var(--ivory);
+    }
+
+    .feed-card {
+      flex: 1;
+      background: var(--ink);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      position: relative;
+      box-shadow: var(--shadow-lg);
+      min-height: 0;
+    }
+
+    .feed-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .feed-ui {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .bracket {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-color: rgba(255, 255, 255, 0.4);
+      border-style: solid;
+    }
+
+    .b-tl {
+      top: 12px;
+      left: 12px;
+      border-width: 2px 0 0 2px;
+      border-radius: 3px 0 0 0;
+    }
+
+    .b-tr {
+      top: 12px;
+      right: 12px;
+      border-width: 2px 2px 0 0;
+      border-radius: 0 3px 0 0;
+    }
+
+    .b-bl {
+      bottom: 12px;
+      left: 12px;
+      border-width: 0 0 2px 2px;
+      border-radius: 0 0 0 3px;
+    }
+
+    .b-br {
+      bottom: 12px;
+      right: 12px;
+      border-width: 0 2px 2px 0;
+      border-radius: 0 0 3px 0;
+    }
+
+    .feed-badge {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.7);
+      white-space: nowrap;
+    }
+
+    .feed-risk-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .feed-risk-fill {
+      height: 100%;
+      width: 0%;
+      transition: width 0.8s ease, background 0.8s ease;
+      background: var(--sage);
+    }
+
+    .no-feed-state {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: #1a1410;
+    }
+
+    .no-feed-icon {
+      opacity: 0.2;
+    }
+
+    .no-feed-text {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border-radius: var(--r-md);
+      padding: 14px 16px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--ivory-3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      border-radius: var(--r-md) var(--r-md) 0 0;
+    }
+
+    .sc-men::after {
+      background: #7aadcf;
+    }
+
+    .sc-women::after {
+      background: var(--rose);
+    }
+
+    .sc-total::after {
+      background: var(--sand);
+    }
+
+    .sc-ratio::after {
+      background: linear-gradient(to right, #7aadcf, var(--rose));
+    }
+
+    .stat-label {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-4);
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-family: var(--serif);
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--ink);
+    }
+
+    .sc-men .stat-value {
+      color: #4a8ab0;
+    }
+
+    .sc-women .stat-value {
+      color: var(--rose);
+    }
+
+    .stat-sub {
+      font-size: 10px;
+      color: var(--ink-4);
+      margin-top: 4px;
+    }
+
+    .ratio-track {
+      height: 4px;
+      background: var(--ivory-3);
+      border-radius: 2px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+
+    .ratio-fill {
+      height: 100%;
+      background: linear-gradient(to right, #7aadcf, var(--rose));
+      border-radius: 2px;
+      width: 50%;
+      transition: width 0.7s ease;
+    }
+
+    .sidebar {
+      border-left: 1px solid var(--ivory-3);
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sb-section {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--ivory-2);
+      flex-shrink: 0;
+    }
+
+    .sb-section:last-child {
+      border-bottom: none;
+    }
+
+    .sb-title {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-4);
+      margin-bottom: 14px;
+    }
+
+    .gauge-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .gauge-wrap {
+      position: relative;
+      width: 160px;
+      height: 90px;
+    }
+
+    .gauge-wrap svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .gauge-center {
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+
+    .gauge-pct {
+      font-family: var(--serif);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    .gauge-label {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 12px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    .gl-safe {
+      color: var(--sage);
+      background: var(--sage-dim);
+      border: 1px solid rgba(90, 138, 114, 0.2);
+    }
+
+    .gl-warn {
+      color: var(--amber);
+      background: var(--amber-dim);
+      border: 1px solid rgba(192, 120, 64, 0.2);
+    }
+
+    .gl-crit {
+      color: var(--rose);
+      background: var(--rose-dim);
+      border: 1px solid rgba(192, 86, 106, 0.25);
+    }
+
+    .alerts-flex {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      padding: 18px 20px 0;
+      padding-bottom: 0;
+    }
+
+    .alerts-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      flex-shrink: 0;
+    }
+
+    .alert-badge-count {
+      font-size: 10px;
+      background: var(--rose-dim);
+      color: var(--rose);
+      border: 1px solid rgba(192, 86, 106, 0.2);
+      border-radius: 20px;
+      padding: 1px 8px;
+      font-weight: 500;
+    }
+
+    .alerts-list {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-bottom: 12px;
+    }
+
+    .alerts-list::-webkit-scrollbar {
+      width: 3px;
+    }
+
+    .alerts-list::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .alerts-list::-webkit-scrollbar-thumb {
+      background: var(--ivory-3);
+      border-radius: 2px;
+    }
+
+    .alert-item {
+      padding: 9px 12px;
+      border-radius: var(--r-sm);
+      font-size: 11px;
+      line-height: 1.5;
+      border-left: 3px solid;
+      animation: slide-in 0.3s ease;
+    }
+
+    @keyframes slide-in {
+      from {
+        opacity: 0;
+        transform: translateY(-6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .ai-critical {
+      border-color: var(--rose);
+      background: #fdf0f2;
+      color: #7a2535;
+    }
+
+    .ai-warn {
+      border-color: var(--amber);
+      background: #fdf6ee;
+      color: #7a4a20;
+    }
+
+    .ai-info {
+      border-color: var(--sage);
+      background: #f0f7f3;
+      color: #2a5a40;
+    }
+
+    .alert-time {
+      font-size: 9px;
+      opacity: 0.55;
+      margin-top: 3px;
+      letter-spacing: 0.04em;
+    }
+
+    .no-alerts {
+      text-align: center;
+      padding: 24px 0;
+      font-size: 11px;
+      color: var(--ink-4);
+    }
+
+    .no-alerts-icon {
+      font-size: 22px;
+      margin-bottom: 6px;
+      opacity: 0.4;
+    }
+
+    .controls {
+      padding: 14px 20px;
+      border-top: 1px solid var(--ivory-2);
+      display: flex;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 10px 0;
+      border-radius: var(--r-sm);
+      border: 1.5px solid;
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      background: transparent;
+      text-transform: uppercase;
+    }
+
+    .btn-start {
+      border-color: rgba(90, 138, 114, 0.4);
+      color: var(--sage);
+    }
+
+    .btn-start:hover {
+      background: var(--sage-dim);
+      border-color: var(--sage);
+    }
+
+    .btn-stop {
+      border-color: rgba(192, 86, 106, 0.3);
+      color: var(--rose);
+    }
+
+    .btn-stop:hover {
+      background: var(--rose-dim);
+      border-color: var(--rose);
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn:disabled {
+      opacity: 0.35;
+      cursor: default;
+    }
+
+    .footer {
+      height: 28px;
+      background: var(--white);
+      border-top: 1px solid var(--ivory-3);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      flex-shrink: 0;
+    }
+
+    .footer-text {
+      font-size: 9px;
+      color: var(--ink-4);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .footer-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .footer-dot {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 9px;
+      color: var(--ink-4);
+      letter-spacing: 0.08em;
+    }
+
+    .fd-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+    }
+
+    .feed-location {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: var(--r-md);
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 500;
+      backdrop-filter: blur(4px);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 0.05em;
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="shell">
+
+    <!-- Header -->
+    <header class="hdr">
+      <div class="hdr-brand">
+        <div class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="9" r="5.5" stroke="white" stroke-width="2" />
+            <line x1="12" y1="14.5" x2="12" y2="21" stroke="white" stroke-width="2" stroke-linecap="round" />
+            <line x1="9.5" y1="18" x2="14.5" y2="18" stroke="white" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </div>
+        <div>
+          <div class="brand-name">Suraksha</div>
+          <div class="brand-tagline">Women Safety Monitoring System</div>
+        </div>
+      </div>
+
+      <div class="hdr-center">
+        <div class="status-pill inactive" id="status-pill">
+          <div class="pill-dot" id="pill-dot"></div>
+          <span id="status-text">Standby</span>
+        </div>
+      </div>
+
+      <div class="hdr-right">
+        <div>
+          <div class="clock" id="clock">00:00:00</div>
+          <div class="date-str" id="datestr">—</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <div class="body">
+
+      <div class="main">
+
+        <div class="feed-card">
+          <img class="feed-img" id="feed-img" src="/video_feed" alt="Live Feed"
+            onerror="document.getElementById('no-feed').style.display='flex'; this.style.display='none'" />
+          <div class="feed-ui">
+            <div class="bracket b-tl"></div>
+            <div class="bracket b-tr"></div>
+            <div class="bracket b-bl"></div>
+            <div class="bracket b-br"></div>
+            <div class="feed-badge" id="feed-badge">Camera Feed · Standby</div>
+            <div class="feed-location">
+              📍 <span id="loc-text">Locating...</span> · <span id="loc-timestamp"></span>
+            </div>
+            <div class="feed-risk-bar">
+              <div class="feed-risk-fill" id="risk-bar-fill"></div>
+            </div>
+          </div>
+          <div class="no-feed-state" id="no-feed" style="display:none;">
+            <div class="no-feed-icon">
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                <rect x="4" y="10" width="34" height="26" rx="4" stroke="white" stroke-width="1.5" opacity="0.3" />
+                <path d="M38 20 L44 16 L44 32 L38 28" stroke="white" stroke-width="1.5" stroke-linecap="round"
+                  stroke-linejoin="round" opacity="0.3" />
+                <line x1="4" y1="44" x2="44" y2="4" stroke="white" stroke-width="1.5" opacity="0.2"
+                  stroke-linecap="round" />
+              </svg>
+            </div>
+            <div class="no-feed-text">Camera not connected</div>
+          </div>
+        </div>
+
+        <div class="stats-row">
+
+          <div class="stat-card sc-men">
+            <div class="stat-label">Men Detected</div>
+            <div class="stat-value" id="stat-male">0</div>
+            <div class="stat-sub">in frame</div>
+          </div>
+
+          <div class="stat-card sc-women">
+            <div class="stat-label">Women Detected</div>
+            <div class="stat-value" id="stat-female">0</div>
+            <div class="stat-sub">in frame</div>
+          </div>
+
+          <div class="stat-card sc-total">
+            <div class="stat-label">Total Scanned</div>
+            <div class="stat-value" id="stat-total">0</div>
+            <div class="stat-sub">in frame</div>
+          </div>
+
+          <div class="stat-card sc-ratio">
+            <div class="stat-label">Gender Ratio</div>
+            <div class="ratio-track">
+              <div class="ratio-fill" id="ratio-fill"></div>
+            </div>
+            <div class="stat-sub" id="ratio-text" style="margin-top:8px;">—</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+
+        <div class="sb-section">
+          <div class="sb-title">Risk Level</div>
+          <div class="gauge-area">
+            <div class="gauge-wrap">
+              <svg viewBox="0 0 160 90" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="arc-g" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#5a8a72" />
+                    <stop offset="50%" stop-color="#c07840" />
+                    <stop offset="100%" stop-color="#c0566a" />
+                  </linearGradient>
+                </defs>
+                <path d="M 16 82 A 64 64 0 0 1 144 82" fill="none" stroke="#e8e0d8" stroke-width="10"
+                  stroke-linecap="round" />
+                <path id="gauge-arc" d="M 16 82 A 64 64 0 0 1 144 82" fill="none" stroke="url(#arc-g)" stroke-width="10"
+                  stroke-linecap="round" stroke-dasharray="201" stroke-dashoffset="201"
+                  style="transition: stroke-dashoffset 0.8s ease;" />
+                <line id="gauge-needle" x1="80" y1="82" x2="80" y2="26" stroke="#2c2420" stroke-width="1.5"
+                  stroke-linecap="round" transform="rotate(-90 80 82)" style="transition: transform 0.8s ease;" />
+                <circle cx="80" cy="82" r="5" fill="white" stroke="#d4c9bc" stroke-width="1.5" />
+                <text x="14" y="94" font-size="8" fill="#9a8880" font-family="Outfit,sans-serif">Low</text>
+                <text x="130" y="94" font-size="8" fill="#9a8880" font-family="Outfit,sans-serif">High</text>
+              </svg>
+              <div class="gauge-center">
+                <div class="gauge-pct" id="gauge-pct">0%</div>
+              </div>
+            </div>
+            <div class="gauge-label gl-safe" id="gauge-label">All Clear</div>
+          </div>
+        </div>
+
+        <div class="alerts-flex">
+          <div class="alerts-header">
+            <div class="sb-title" style="margin-bottom:0;">Incident Log</div>
+            <div class="alert-badge-count" id="alert-count">0 alerts</div>
+          </div>
+          <div class="alerts-list" id="alerts-list">
+            <div class="no-alerts" id="no-alert-msg">
+              <div class="no-alerts-icon">🛡</div>
+              <div>No incidents recorded</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button class="btn btn-start" id="btn-start" onclick="startMonitoring()">Start</button>
+          <button class="btn btn-stop" id="btn-stop" onclick="stopMonitoring()" disabled>Stop</button>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-text">Suraksha v1.0 · Women Safety Monitoring System</div>
+      <div class="footer-right">
+        <div class="footer-dot">
+          <div class="fd-dot" style="background:#5a8a72;"></div>
+          <span>System Online</span>
+        </div>
+        <div class="footer-dot">
+          <div class="fd-dot" id="cam-dot" style="background:#d4c9bc;"></div>
+          <span id="cam-status">Camera Standby</span>
+        </div>
+        <div class="footer-dot">
+          <div class="fd-dot" id="ai-dot" style="background:#d4c9bc;"></div>
+          <span id="ai-status">Detection Off</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <audio id="snd" src="https://www.soundjay.com/button/beep-07.wav"></audio>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+
+
+</body>
+
+</html>
