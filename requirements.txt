@@ -1,0 +1,8 @@
+flask
+flask-cors
+opencv-python
+ultralytics
+numpy
+sounddevice
+scipy
+wheel

@@ -1,0 +1,32 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.venv/
+env/
+venv/
+ENV/
+
+# Project specific
+captures/
+*.caffemodel
+*.pt
+*.prototxt
+gender_deploy.prototxt
+gender_net.caffemodel
+yolov8n.pt
+
+# Recordings (in case they are in root)
+*.wav
+*.avi
+*.mp4
+
+# IDEs
+.vscode/
+# Logs and temporary files
+logs.json
+.ipynb_checkpoints/
+.DS_Store
+*.log
